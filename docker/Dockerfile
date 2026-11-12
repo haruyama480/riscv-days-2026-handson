@@ -43,7 +43,7 @@ USER ishi-kai
 WORKDIR /home/ishi-kai
 
 # 3. 公式イメージの設定ファイルをコピー (削除予定: 現在はビルドキャッシュを利用するため一時的に残している)
-COPY --chown=ishi-kai:ishi-kai .bashrc .profile .magicrc .spiceinit /home/ishi-kai/
+COPY --chown=ishi-kai:ishi-kai .bashrc .magicrc .spiceinit /home/ishi-kai/
 COPY --chown=ishi-kai:ishi-kai .xschem /home/ishi-kai/.xschem
 COPY --chown=ishi-kai:ishi-kai .klayout /home/ishi-kai/.klayout
 
@@ -107,7 +107,7 @@ WORKDIR /home/ishi-kai
 RUN git clone --depth 1 https://github.com/ishi-kai/RISC-V-Day_MPW_template.git || true
 
 # 10. 環境変数
-ENV PATH="/home/ishi-kai/bin:/usr/local/bin:${PATH}" \
+ENV PATH="/home/ishi-kai/bin/klayout:/home/ishi-kai/bin:/usr/local/bin:${PATH}" \
     LD_LIBRARY_PATH="/home/ishi-kai/bin/klayout" \
     PDK_ROOT="/home/ishi-kai/pdk" \
     PDK="gf180mcuD" \
@@ -132,9 +132,8 @@ tail -f /dev/null\n' > /usr/local/bin/start-vnc.sh \
 
 # 12. 実行環境の設定ファイル
 #     ビルドでは参照しない。ここより前の層のキャッシュを残すため最後に置く。
-#     current_pdk は .bashrc が source する。pdk スクリプトは root で動くため
-#     /root/current_pdk に書き、PDK_ROOT も /root/pdk になる。公式と同じ内容を置く。
-COPY --chown=ishi-kai:ishi-kai .bashrc .profile .magicrc .spiceinit current_pdk /home/ishi-kai/
+#     PDK 変数と KLayout の PATH / LD_LIBRARY_PATH は上の ENV が渡す。
+COPY --chown=ishi-kai:ishi-kai .bashrc .magicrc .spiceinit /home/ishi-kai/
 COPY --chown=ishi-kai:ishi-kai .xschem /home/ishi-kai/.xschem
 COPY --chown=ishi-kai:ishi-kai .klayout /home/ishi-kai/.klayout
 

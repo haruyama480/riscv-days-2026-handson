@@ -115,8 +115,3 @@ if ! shopt -oq posix; then
     . /etc/bash_completion
   fi
 fi
-export PATH="$HOME/bin/klayout/:$PATH"
-export LD_LIBRARY_PATH="$HOME/bin/klayout/:$LD_LIBRARY_PATH"
-export PATH="$HOME/bin/klayout/:$PATH"
-export LD_LIBRARY_PATH="$HOME/bin/klayout/:$LD_LIBRARY_PATH"
-source $HOME/current_pdk
