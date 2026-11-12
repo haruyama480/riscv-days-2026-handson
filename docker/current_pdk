@@ -1,0 +1,5 @@
+export PDK_ROOT="/home/ishi-kai/pdk"
+export PDK="gf180mcuD"
+export GF_PDK_OPTION="D"
+export STD_CELL_LIBRARY="gf180mcu_fd_sc_mcu7t5v0"
+systemctl --user import-environment DISPLAY WAYLAND_DISPLAY XDG_RUNTIME_DIR 2>/dev/null

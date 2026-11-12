@@ -42,7 +42,7 @@ RUN useradd -m -s /bin/bash ishi-kai \
 USER ishi-kai
 WORKDIR /home/ishi-kai
 
-# 3. 公式イメージの設定ファイルをコピー
+# 3. 公式イメージの設定ファイルをコピー (削除予定: 現在はビルドキャッシュを利用するため一時的に残している)
 COPY --chown=ishi-kai:ishi-kai .bashrc .profile .magicrc .spiceinit /home/ishi-kai/
 COPY --chown=ishi-kai:ishi-kai .xschem /home/ishi-kai/.xschem
 COPY --chown=ishi-kai:ishi-kai .klayout /home/ishi-kai/.klayout
@@ -108,6 +108,7 @@ ENV PATH="/home/ishi-kai/bin:/usr/local/bin:${PATH}" \
     LD_LIBRARY_PATH="/home/ishi-kai/bin/klayout" \
     PDK_ROOT="/home/ishi-kai/pdk" \
     PDK="gf180mcuD" \
+    GF_PDK_OPTION="D" \
     PDKPATH="/home/ishi-kai/pdk/gf180mcuD" \
     STD_CELL_LIBRARY="gf180mcu_fd_sc_mcu7t5v0" \
     KLAYOUT_PATH="/home/ishi-kai/pdk/gf180mcuD/libs.tech/klayout" \
@@ -125,6 +126,14 @@ export HOME=/home/ishi-kai\n\
 vncserver :1 -geometry 1920x1080 -depth 24\n\
 tail -f /dev/null\n' > /usr/local/bin/start-vnc.sh \
     && chmod +x /usr/local/bin/start-vnc.sh
+
+# 12. 実行環境の設定ファイル
+#     ビルドでは参照しない。ここより前の層のキャッシュを残すため最後に置く。
+#     current_pdk は .bashrc が source する。pdk スクリプトは root で動くため
+#     /root/current_pdk に書き、PDK_ROOT も /root/pdk になる。公式と同じ内容を置く。
+COPY --chown=ishi-kai:ishi-kai .bashrc .profile .magicrc .spiceinit current_pdk /home/ishi-kai/
+COPY --chown=ishi-kai:ishi-kai .xschem /home/ishi-kai/.xschem
+COPY --chown=ishi-kai:ishi-kai .klayout /home/ishi-kai/.klayout
 
 USER ishi-kai
 WORKDIR /home/ishi-kai/work

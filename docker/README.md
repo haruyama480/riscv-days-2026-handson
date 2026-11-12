@@ -9,3 +9,8 @@ KLayout / xschem / ngspice / Magic / Netgen + gf180mcuD PDK が入っていま�
 cd docker
 docker build -t openeda-risc-v-day .
 ```
+
+amd64向け
+```bash
+docker build --platform linux/amd64 -t openeda-risc-v-day:amd64 .
+```
