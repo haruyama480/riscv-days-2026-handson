@@ -75,7 +75,10 @@ RUN if [ -d /home/ishi-kai/src/xschem-gaw ]; then \
 RUN \
     # gds2palace/gmsh の pip install をスキップ（aarch64 で失敗するため）
     sed -i '/gds2palace/s/^/# SKIP: /' pdk_gf180-setup.sh && \
-    sed -i '/gmsh/s/^/# SKIP: /' pdk_gf180-setup.sh
+    sed -i '/gmsh/s/^/# SKIP: /' pdk_gf180-setup.sh && \
+    # amd64 をこの Mac の QEMU 上でビルドすると、Nix が seccomp BPF を載せられず止まる。
+    # 公式インストーラの extra-conf に無効化を足す。
+    sed -i 's/extra-experimental-features = nix-command flakes/extra-experimental-features = nix-command flakes\n      filter-syscalls = false/' pdk_gf180-setup.sh
 
 # 8. PDK インストール（失敗したら止める）
 WORKDIR /home/ishi-kai/OpenEDA-PDK_SetupScript
