@@ -1,0 +1,77 @@
+v {xschem version=3.4.8RC file_version=1.3}
+G {}
+K {type=subcircuit
+format="@name @pinlist @symname"
+spectre_format="@name ( @pinlist ) @symname"
+template="name=x1"
+}
+V {}
+S {}
+F {}
+E {}
+B 5 147.5 -22.5 152.5 -17.5 {name=VDD dir=inout}
+B 5 -152.5 -22.5 -147.5 -17.5 {name=A dir=in}
+B 5 147.5 -2.5 152.5 2.5 {name=Q dir=out}
+B 5 147.5 17.5 152.5 22.5 {name=VSS dir=inout}
+N 150 -120 150 -100 {lab=VDD}
+N 150 20 150 110 {lab=GND}
+N 220 80 220 110 {lab=GND}
+N 150 -0 270 0 {lab=VOUT}
+N 220 0 220 20 {lab=VOUT}
+N -170 -20 -150 -20 {lab=VIN}
+N -270 -170 -270 -150 {lab=VDD}
+N -270 -90 -270 -70 {lab=GND}
+N -180 -90 -180 -70 {lab=GND}
+N -180 -170 -180 -150 {lab=VIN}
+N 150 -40 150 -20 {lab=#net1}
+C {lab_pin.sym} 150 -120 0 0 {name=p1 sig_type=std_logic lab=VDD}
+C {lab_pin.sym} -170 -20 0 0 {name=p2 sig_type=std_logic lab=VIN}
+C {lab_pin.sym} -270 -170 0 0 {name=p3 sig_type=std_logic lab=VDD}
+C {lab_pin.sym} -180 -170 2 1 {name=p4 sig_type=std_logic lab=VIN}
+C {lab_pin.sym} 270 0 0 1 {name=p5 sig_type=std_logic lab=VOUT}
+C {gnd.sym} 150 110 0 0 {name=l1 lab=GND}
+C {gnd.sym} 220 110 0 0 {name=l2 lab=GND}
+C {gnd.sym} -180 -70 0 0 {name=l3 lab=GND}
+C {gnd.sym} -270 -70 0 0 {name=l4 lab=GND}
+C {capa.sym} 220 50 0 0 {name=C1
+m=1
+value=10f
+footprint=1206
+device="ceramic capacitor"}
+C {ammeter.sym} 150 -70 0 0 {name=Vd savecurrent=true spice_ignore=0}
+C {vsource.sym} -180 -120 0 0 {name=vin value="pwl 0 0 10n 0 20n 3.3 60n 3.3 70n 0" savecurrent=false}
+C {vsource.sym} -270 -120 0 0 {name=vdd value=3.3 savecurrent=false}
+C {devices/code_shown.sym} 170 -430 0 0 {name=spice only_toplevel=false value=".option savecurrent
+.control
+save all
+
+* DC analysis (I/O curve)
+dc vin 0 3.3 0.01
+plot vout vin
+plot i(vd)
+wrdata inv_dut_113_tb_dc.txt v(vout)
+write inv_dut_113_tb_dc.raw
+
+* Tran analysis
+tran 0.1n 100n
+plot vout vin
+plot i(vd)
+wrdata inv_dut_113_tb_tr.txt v(vout)
+write inv_dut_113_tb_tr.raw
+.endc
+
+"}
+C {devices/code.sym} -350 -330 0 0 {name=GF180_MODELS
+only_toplevel=true
+format="tcleval( @value )"
+value="
+.include $::180MCU_MODELS/design.ngspice
+.lib $::180MCU_MODELS/sm141064.ngspice typical
+.lib $::180MCU_MODELS/sm141064.ngspice res_typical
+.lib $::180MCU_MODELS/sm141064.ngspice moscap_typical
+.lib $::180MCU_MODELS/sm141064.ngspice diode_typical
+* .lib $::180MCU_MODELS/sm141064.ngspice res_statistical
+"
+spice_ignore=false
+      }
+C {inverter/inv_dut_113.sym} 0 0 0 0 {name=x1}

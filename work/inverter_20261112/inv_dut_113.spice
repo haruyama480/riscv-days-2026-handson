@@ -1,0 +1,6 @@
+** sch_path: /home/ishi-kai/work/inverter/inv_dut_113.sch
+.subckt inv_dut_113 VDD A Q VSS
+*.PININFO A:I Q:O VSS:B VDD:B
+M2 Q A VSS VSS nfet_03v3 L=0.30u W=1.80u nf=1
+M1 Q A VDD VDD pfet_03v3 L=0.3u W=1.8u nf=1
+.ends
