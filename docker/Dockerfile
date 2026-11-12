@@ -120,7 +120,7 @@ ENV PATH="/home/ishi-kai/bin:/usr/local/bin:${PATH}" \
 # 11. VNC 設定
 USER root
 RUN mkdir -p /home/ishi-kai/.vnc /home/ishi-kai/work \
-    && echo "openeda" | vncpasswd -f > /home/ishi-kai/.vnc/passwd \
+    && echo "ishi-kai" | vncpasswd -f > /home/ishi-kai/.vnc/passwd \
     && chmod 600 /home/ishi-kai/.vnc/passwd \
     && chown -R ishi-kai:ishi-kai /home/ishi-kai/.vnc /home/ishi-kai/work \
     && printf '#!/bin/bash\n\
