@@ -1,0 +1,47 @@
+#!/bin/bash
+# KLayout の DRC / LVS / PEX マクロは gnome-terminal を呼ぶ。
+# このイメージのデスクトップは xfce なので、同じ指定を xfce4-terminal に渡す。
+title=""
+workdir=""
+cmd=()
+while [ $# -gt 0 ]; do
+  case "$1" in
+    --title=*)
+      title=${1#--title=}
+      shift
+      ;;
+    --title)
+      title=$2
+      shift 2
+      ;;
+    --working-directory=*)
+      workdir=${1#--working-directory=}
+      shift
+      ;;
+    --working-directory)
+      workdir=$2
+      shift 2
+      ;;
+    --)
+      shift
+      cmd=("$@")
+      break
+      ;;
+    *)
+      cmd+=("$1")
+      shift
+      ;;
+  esac
+done
+
+args=()
+if [ -n "$title" ]; then
+  args+=("--title=$title")
+fi
+if [ -n "$workdir" ]; then
+  args+=("--working-directory=$workdir")
+fi
+if [ ${#cmd[@]} -gt 0 ]; then
+  args+=(--execute "${cmd[@]}")
+fi
+exec xfce4-terminal "${args[@]}"
