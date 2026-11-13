@@ -36,8 +36,8 @@ spiceprefix=X
 C {ipin.sym} -120 80 0 0 {name=p1 lab=A}
 C {opin.sym} 60 80 0 0 {name=p2 lab=Q}
 C {symbols/pfet_03v3.sym} -60 20 0 0 {name=M1
-L=0.3u
-W=1.8u
+L=0.30u
+W=1.80u
 nf=1
 m=1
 ad="'int((nf+1)/2) * W/nf * 0.18u'"
